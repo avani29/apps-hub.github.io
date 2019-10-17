@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Part-Model Constitution</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body style="margin:30px">
+<form>
+  <div class="form-group">
+    <h2>Content</h2>
+    <textarea class="form-control" id="article_content" rows="7"></textarea>
+  </div>
+</form>
+<button type="button" class="btn btn-info" onclick=generate()>Generate & Copy</button>
+
+<script>
+function generate(){
+    var data = document.getElementById("article_content").value;
+    data = data.replace(/(?:\r\n|\r|\n)/g, '\\n');
+    document.getElementById("article_content").value = data;
+    var copyText = document.getElementById("article_content");
+    copyText.select();
+    document.execCommand("copy");
+    document.getElementById("article_content").value = "";
+}
+
+
+</script>
+
+</body>
+</html>
