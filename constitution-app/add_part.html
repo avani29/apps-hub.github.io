@@ -11,10 +11,37 @@
 
 <div style="margin: 20px">
     <h2>Add part</h2>
-    <div class="form-group">
-        <label>Part Number(in Roman)</label>
-        <input type="text" class="form-control" id="part_roman" placeholder="Ex: xxii">
-    </div>
+     <div class="form-group">
+        <label >Select Part Number</label>
+        <select class="form-control" id="part_number">
+            <option>i</option>
+            <option>ii</option>
+            <option>iii</option>
+            <option>iv</option>
+            <option>iva</option>
+            <option>v</option>
+            <option>vi</option>
+            <option>vii</option>
+            <option>viii</option>
+            <option>ix</option>
+            <option>ixa</option>
+            <option>ixb</option>
+            <option>x</option>
+            <option>xi</option>
+            <option>xii</option>
+            <option>xiii</option>
+            <option>xiv</option>
+            <option>xiva</option>
+            <option>xv</option>
+            <option>xvi</option>
+            <option>xvii</option>
+            <option>xviii</option>
+            <option>xix</option>
+            <option>xx</option>
+            <option>xxi</option>
+            <option>xxii</option>
+        </select>
+    </div>  
 
     <div class="form-group">
         <label>Part Title</label>
@@ -40,6 +67,9 @@
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js"></script>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="notify.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-database.js"></script>
 
@@ -60,9 +90,10 @@
         firebase.analytics();
 
         var database = firebase.database();
+        $.notify("Hi Fayaz!", "info");
 
         function addPart(){
-            var pid = document.getElementById("part_roman").value.toLowerCase().trim();
+            var pid = document.getElementById("part_number").value.toLowerCase().trim();
             var title = document.getElementById("part_title").value.trim();
             title = titleCase(title);
             var article_start = document.getElementById("article_start").value.trim();
@@ -74,7 +105,7 @@
             str = str.toLowerCase().split(' ');
             for (var i = 0; i < str.length; i++) {
                 str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
-            }
+            }   
             return str.join(' ')+"";
         }
 
@@ -86,9 +117,17 @@
                 article_start : article_start,
                 article_end : article_end
             }).then(function(){
-                console.log("Data added successfully");
+
+                document.getElementById("part_number").value = "";
+                document.getElementById("part_title").value = "";
+                document.getElementById("article_start").value = "";
+                document.getElementById("article_end").value = "";
+
+                $.notify("Part added successfully", "success");
+                console.log("Part added successfully");
             }).catch(function(error){
-                console.error("Unable to add data ");
+                console.error("Unable to add Part ");
+                $.notify(error, "error");
                 console.error(error);
             });
         }
