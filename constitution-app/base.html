@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Part-Constitution</title>
+</head>
+<body>
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-database.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCHKUYiJJVyw3gzBAn_n0Nnueop2xjqWOM",
+            authDomain: "constitutionapp-india.firebaseapp.com",
+            databaseURL: "https://constitutionapp-india.firebaseio.com",
+            projectId: "constitutionapp-india",
+            storageBucket: "constitutionapp-india.appspot.com",
+            messagingSenderId: "90741312831",
+            appId: "1:90741312831:web:3cd4376503f9f9bf38578a",
+            measurementId: "G-V6SEFNRBSK"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        var database = firebase.database();
+
+        function writeUserData(userId, name, email, imageUrl) {
+            firebase.database().ref('users/' + userId).set({
+                username: name,
+                email: email,
+                profile_picture : imageUrl
+            });
+        }
+    </script>
+
+</body>
+</html>
