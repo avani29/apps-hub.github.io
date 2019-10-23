@@ -111,11 +111,11 @@
 
         function writePartsData(pid, title, article_start, article_end) {
             console.log(pid+" " + title+" "+article_start+" "+article_end);
-            firebase.database().ref('parts/' + pid).set({
-                part_no: pid,
+            firebase.database().ref('parts/' + pid.toUpperCase()).set({
+                part_no: pid.toUpperCase(),
                 title: title,
-                article_start : article_start,
-                article_end : article_end
+                article_start : article_start.toUpperCase(),
+                article_end : article_end.toUpperCase()
             }).then(function(){
 
                 document.getElementById("part_number").value = "";
