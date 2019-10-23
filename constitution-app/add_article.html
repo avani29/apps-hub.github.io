@@ -23,8 +23,13 @@
     </div>
 
     <div class="form-group">
-        <label>Content</label>
-        <input type="text" class="form-control" id="article_content">
+        <label>Chapter(if part of any chapter)</label>
+        <input type="text" class="form-control" id="article_chapter" >
+    </div>
+
+    <div class="form-group">
+        <label>Category(if part of any Category)</label>
+        <input type="text" class="form-control" id="article_category" >
     </div>
     
     <div class="form-group">
@@ -60,13 +65,13 @@
     </div>  
 
     <div class="form-group">
-        <label>Chapter(if part of any chapter)</label>
-        <input type="text" class="form-control" id="article_chapter" >
+        <label>Content</label>
+        <textarea type="text" class="form-control" id="article_content"> </textarea>
     </div>
 
     <div class="form-group">
-        <label>Category(if part of any Category)</label>
-        <input type="text" class="form-control" id="article_category" >
+        <label>Hints</label>
+        <textarea type="text" class="form-control" id="article_hints"> </textarea>
     </div>
 
     <button type="button" class="btn btn-primary" onclick="addArticle()">Add Article</button>
@@ -114,17 +119,21 @@
             var article_chapter = document.getElementById("article_chapter").value;
             var article_category = document.getElementById("article_category").value;
             
-            writeArticleData(article_number, artilce_title, content, part_number, article_category, article_chapter);
+            var article_hints = document.getElementById("article_hints").value;
+            article_hints = article_hints.replace();
+
+            writeArticleData(article_number, artilce_title, content, part_number, article_category, article_chapter, article_hints);
         }
 
-        function writeArticleData(article_number, artilce_title, content, part_number, article_category, article_chapter) {
-            firebase.database().ref('articles/' + article_number).set({
+        function writeArticleData(article_number, artilce_title, content, part_number, article_category, article_chapter, article_hints) {
+            firebase.database().ref('articles/' + article_number.toUpperCase()).set({
                 number: article_number,
                 title: artilce_title,
                 content : content,
-                part_number : part_number,
+                part_number : part_number.toUpperCase(),
                 category : article_category,
-                chapter : article_chapter
+                chapter : article_chapter,
+                hints: article_hints
             }).then(function(){
                 $.notify("Article added successfully", "success");
                 document.getElementById("article_number").value = "";
@@ -132,6 +141,7 @@
                 document.getElementById("article_content").value = "";
                 document.getElementById("article_category").value = "";
                 document.getElementById("article_chapter").value = "";
+                document.getElementById("article_hints").value = "";
             }).catch(function(error){
                 $.notify(error, "error");
             });
