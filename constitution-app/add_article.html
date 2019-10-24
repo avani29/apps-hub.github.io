@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Article-Constitution</title>
+</head>
+<body>
+
+
+
+<div style="margin: 20px">
+    <h2>Add Article</h2>
+    <div class="form-group">
+        <label>Article Number</label>
+        <input type="text" class="form-control" id="article_number" >
+    </div>
+
+    <div class="form-group">
+        <label>Article Title</label>
+        <input type="text" class="form-control" id="artilce_title" >
+    </div>
+
+    <div class="form-group">
+        <label>Chapter(if part of any chapter)</label>
+        <input type="text" class="form-control" id="article_chapter" >
+    </div>
+
+    <div class="form-group">
+        <label>Category(if part of any Category)</label>
+        <input type="text" class="form-control" id="article_category" >
+    </div>
+    
+    <div class="form-group">
+        <label >Select Part Number</label>
+        <select class="form-control" id="part_number">
+            <option>i</option>
+            <option>ii</option>
+            <option>iii</option>
+            <option>iv</option>
+            <option>iva</option>
+            <option>v</option>
+            <option>vi</option>
+            <option>vii</option>
+            <option>viii</option>
+            <option>ix</option>
+            <option>ixa</option>
+            <option>ixb</option>
+            <option>x</option>
+            <option>xi</option>
+            <option>xii</option>
+            <option>xiii</option>
+            <option>xiv</option>
+            <option>xiva</option>
+            <option>xv</option>
+            <option>xvi</option>
+            <option>xvii</option>
+            <option>xviii</option>
+            <option>xix</option>
+            <option>xx</option>
+            <option>xxi</option>
+            <option>xxii</option>
+        </select>
+    </div>  
+
+    <div class="form-group">
+        <label>Content</label>
+        <textarea type="text" class="form-control" id="article_content"> </textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Hints</label>
+        <textarea type="text" class="form-control" id="article_hints"> </textarea>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="addArticle()">Add Article</button>
+</div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="notify.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-database.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCHKUYiJJVyw3gzBAn_n0Nnueop2xjqWOM",
+            authDomain: "constitutionapp-india.firebaseapp.com",
+            databaseURL: "https://constitutionapp-india.firebaseio.com",
+            projectId: "constitutionapp-india",
+            storageBucket: "constitutionapp-india.appspot.com",
+            messagingSenderId: "90741312831",
+            appId: "1:90741312831:web:3cd4376503f9f9bf38578a",
+            measurementId: "G-V6SEFNRBSK"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        var database = firebase.database();
+
+        function addArticle(){
+            var content = document.getElementById("article_content").value;
+            content = content.replace(/(?:\r\n|\r|\n)/g, '\\n');
+            var article_number = document.getElementById("article_number").value;
+            var artilce_title = document.getElementById("artilce_title").value;
+            artilce_title = titleCase(artilce_title);
+            var part_number = document.getElementById("part_number").value;
+            var article_chapter = document.getElementById("article_chapter").value;
+            var article_category = document.getElementById("article_category").value;
+            
+            var article_hints = document.getElementById("article_hints").value;
+            article_hints = article_hints.replace();
+
+            writeArticleData(article_number, artilce_title, content, part_number, article_category, article_chapter, article_hints);
+        }
+
+        function writeArticleData(article_number, artilce_title, content, part_number, article_category, article_chapter, article_hints) {
+            firebase.database().ref('articles/' + article_number.toUpperCase()).set({
+                number: article_number,
+                title: artilce_title,
+                content : content,
+                part_number : part_number.toUpperCase(),
+                category : article_category,
+                chapter : article_chapter,
+                hints: article_hints
+            }).then(function(){
+                $.notify("Article added successfully", "success");
+                document.getElementById("article_number").value = "";
+                document.getElementById("artilce_title").value = "";
+                document.getElementById("article_content").value = "";
+                document.getElementById("article_category").value = "";
+                document.getElementById("article_chapter").value = "";
+                document.getElementById("article_hints").value = "";
+            }).catch(function(error){
+                $.notify(error, "error");
+            });
+
+        }
+
+        function titleCase(str) {
+            str = str.toLowerCase().split(' ');
+            for (var i = 0; i < str.length; i++) {
+                str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+            }   
+            return str.join(' ')+"";
+        }
+    </script>
+
+</body>
+</html>

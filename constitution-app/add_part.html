@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Add Part-Constitution</title>
+</head>
+<body>
+
+
+<div style="margin: 20px">
+    <h2>Add part</h2>
+     <div class="form-group">
+        <label >Select Part Number</label>
+        <select class="form-control" id="part_number">
+            <option>i</option>
+            <option>ii</option>
+            <option>iii</option>
+            <option>iv</option>
+            <option>iva</option>
+            <option>v</option>
+            <option>vi</option>
+            <option>vii</option>
+            <option>viii</option>
+            <option>ix</option>
+            <option>ixa</option>
+            <option>ixb</option>
+            <option>x</option>
+            <option>xi</option>
+            <option>xii</option>
+            <option>xiii</option>
+            <option>xiv</option>
+            <option>xiva</option>
+            <option>xv</option>
+            <option>xvi</option>
+            <option>xvii</option>
+            <option>xviii</option>
+            <option>xix</option>
+            <option>xx</option>
+            <option>xxi</option>
+            <option>xxii</option>
+        </select>
+    </div>  
+
+    <div class="form-group">
+        <label>Part Title</label>
+        <input type="text" class="form-control" id="part_title" placeholder="Part Title here">
+    </div>
+
+    <div class="form-group">
+        <label>Articles Starting Number</label>
+        <input type="text" class="form-control" id="article_start" placeholder="1">
+    </div>
+
+    <div class="form-group">
+        <label>Articles Ending Number</label>
+        <input type="text" class="form-control" id="article_end" placeholder="1">
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="addPart()">Add Part</button>
+</div>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-analytics.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="notify.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-database.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCHKUYiJJVyw3gzBAn_n0Nnueop2xjqWOM",
+            authDomain: "constitutionapp-india.firebaseapp.com",
+            databaseURL: "https://constitutionapp-india.firebaseio.com",
+            projectId: "constitutionapp-india",
+            storageBucket: "constitutionapp-india.appspot.com",
+            messagingSenderId: "90741312831",
+            appId: "1:90741312831:web:3cd4376503f9f9bf38578a",
+            measurementId: "G-V6SEFNRBSK"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+
+        var database = firebase.database();
+        $.notify("Hi Fayaz!", "info");
+
+        function addPart(){
+            var pid = document.getElementById("part_number").value.toLowerCase().trim();
+            var title = document.getElementById("part_title").value.trim();
+            title = titleCase(title);
+            var article_start = document.getElementById("article_start").value.trim();
+            var article_end = document.getElementById("article_end").value.trim();
+            writePartsData(pid, title, article_start, article_end);
+        }   
+
+        function titleCase(str) {
+            str = str.toLowerCase().split(' ');
+            for (var i = 0; i < str.length; i++) {
+                str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+            }   
+            return str.join(' ')+"";
+        }
+
+        function writePartsData(pid, title, article_start, article_end) {
+            console.log(pid+" " + title+" "+article_start+" "+article_end);
+            firebase.database().ref('parts/' + pid.toUpperCase()).set({
+                part_no: pid.toUpperCase(),
+                title: title,
+                article_start : article_start.toUpperCase(),
+                article_end : article_end.toUpperCase()
+            }).then(function(){
+
+                document.getElementById("part_number").value = "";
+                document.getElementById("part_title").value = "";
+                document.getElementById("article_start").value = "";
+                document.getElementById("article_end").value = "";
+
+                $.notify("Part added successfully", "success");
+                console.log("Part added successfully");
+            }).catch(function(error){
+                console.error("Unable to add Part ");
+                $.notify(error, "error");
+                console.error(error);
+            });
+        }
+    </script>
+
+</body>
+</html>
